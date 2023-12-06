@@ -12,6 +12,7 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 from load_objs import load_item
 
+
 class GroupDataset(IterableDataset):
     def __init__(self, dataset: AbstractDataset, split: str):
         super(GroupDataset, self).__init__()
@@ -32,6 +33,7 @@ class GroupDataset(IterableDataset):
     def __next__(self):
         x, y, _ = self.fetch_f()
         return torch.tensor(x), torch.tensor(y)
+
 
 def train(config):
     print('using config:', config)
@@ -79,10 +81,11 @@ def train(config):
             break
 
 
-@hydra.main(config_path="../config", config_name="train_grokk")
+@hydra.main(config_path="../config", config_name="reg_grok")
 def main(cfg : DictConfig):
     cfg = OmegaConf.to_container(cfg)
     train(cfg)
+
 
 if __name__ == "__main__":
     main()

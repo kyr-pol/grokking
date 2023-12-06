@@ -1,5 +1,6 @@
 .env
 .DS_Store
+.idea/
 __pycache__/
 wandb/
 outputs/

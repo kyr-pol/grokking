@@ -1,8 +1,9 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn.functional as functional
 from transformer import Transformer
 from utils import causal_attn_mask, parameter_norm
+
 
 class GrokkModel(nn.Module):
     def __init__(self, transformer_config, vocab_size, output_size, device):
@@ -18,7 +19,7 @@ class GrokkModel(nn.Module):
     def get_loss(self, x, y):
         predictions, attns = self(x)
         # print(torch.argmax(predictions[:, -1, :], dim=-1), x[:, -1])
-        loss = F.cross_entropy(predictions[:, -1, :], y)
+        loss = functional.cross_entropy(predictions[:, -1, :], y)
         accuracy = (torch.argmax(predictions[:, -1, :], dim=-1) == y).float().mean()
         attn_entropies = sum([-(attn * torch.log(attn+1e-7)).sum(dim=-1).mean().item() for attn in attns]) / len(attns)
         param_norm = parameter_norm(self)
